@@ -1,0 +1,12 @@
+{"contributes": {
+  "commands": [
+    {
+      "command": "codeReviewer.reviewFolder",
+      "title": "Review & Optimize Code"
+    }
+  ]
+},
+"activationEvents": [
+  "onCommand:codeReviewer.reviewFolder"
+]
+}
