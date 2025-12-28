@@ -1,6 +1,7 @@
 const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
+const { reviewWithGemini } = require("./geminiReviewer");
 
 function activate(context) {
   const disposable = vscode.commands.registerCommand(
@@ -14,9 +15,9 @@ function activate(context) {
 
       const rootPath = folders[0].uri.fsPath;
       const edits = new vscode.WorkspaceEdit();
-      let issueCount = 0;
+      let fixCount = 0;
 
-      function scanDir(dir) {
+      async function scanDir(dir) {
         const files = fs.readdirSync(dir);
 
         for (const file of files) {
@@ -24,45 +25,32 @@ function activate(context) {
           const stat = fs.statSync(fullPath);
 
           if (stat.isDirectory()) {
-            scanDir(fullPath);
+            await scanDir(fullPath);
           } else if (file.endsWith(".js")) {
-            fixFile(fullPath);
+            const fixes = await reviewWithGemini(fullPath);
+
+            fixes.forEach(fix => {
+              const uri = vscode.Uri.file(fullPath);
+              const range = new vscode.Range(
+                new vscode.Position(fix.line - 1, 0),
+                new vscode.Position(fix.line - 1, fix.original.length)
+              );
+
+              edits.replace(uri, range, fix.replacement);
+              fixCount++;
+            });
           }
         }
       }
 
-      function fixFile(filePath) {
-        const uri = vscode.Uri.file(filePath);
-        const code = fs.readFileSync(filePath, "utf8");
-        const lines = code.split("\n");
+      await scanDir(rootPath);
 
-        lines.forEach((line, index) => {
-          const range = new vscode.Range(
-            new vscode.Position(index, 0),
-            new vscode.Position(index, line.length)
-          );
-
-          if (line.includes("var ")) {
-            const fixed = line.replace("var ", "let ");
-            edits.replace(uri, range, fixed);
-            issueCount++;
-          }
-
-          if (line.includes("console.log")) {
-            edits.replace(uri, range, "");
-            issueCount++;
-          }
-        });
-      }
-
-      scanDir(rootPath);
-
-      if (issueCount > 0) {
+      if (fixCount > 0) {
         await vscode.workspace.applyEdit(edits);
       }
 
       vscode.window.showInformationMessage(
-        `Auto-fix complete. Fixed ${issueCount} issues.`
+        `🤖 Gemini review complete. Fixed ${fixCount} issues.`
       );
     }
   );

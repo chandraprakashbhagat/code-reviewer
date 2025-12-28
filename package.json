@@ -18,6 +18,24 @@
   },
   "dependencies": {
     "@google/genai": "^1.34.0",
+    "@google/generative-ai": "^0.24.1",
     "dotenv": "^17.2.3"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chandraprakashbhagat/code-reviewer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chandraprakashbhagat/code-reviewer/issues"
+  },
+  "homepage": "https://github.com/chandraprakashbhagat/code-reviewer#readme"
 }
