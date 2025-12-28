@@ -1,12 +1,17 @@
 # AI Code Reviewer
 
-VS Code extension that reviews and optimizes JavaScript code using AI.
+An AI-powered VS Code extension that reviews and optimizes JavaScript code using Gemini AI.
 
 ## Features
-- Full workspace scan
-- AI-based optimization
-- Safe AST validation
-- Automatic fixes
+- Reviews all JS files in workspace
+- Suggests and applies safe fixes
+- Uses Gemini AI for reasoning
+- Undo supported
 
 ## Usage
-Open a JS project → Run "AI Review & Optimize Code"
+1. Open a JS project
+2. Press Ctrl + Shift + P
+3. Run **AI Review & Optimize Code**
+
+## Requirements
+- Gemini API key set as `GEMINI_API_KEY`

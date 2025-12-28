@@ -1,11 +1,12 @@
 {
-  "name": "ai-code-reviewer",
-  "displayName": "AI Code Reviewer",
+  "name": "my-ai-codereviewer",
+  "displayName": "AI-Code-Reviewer-by-chandraprakashbhagat",
   "description": "AI-powered code reviewer",
   "version": "1.0.0",
-  "publisher": "your-name",
+  "publisher": "ChandraprakashBhagat",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.85.0",
+    "icon": "codereviewer.png"
   },
   "main": "./extension.js",
   "contributes": {
